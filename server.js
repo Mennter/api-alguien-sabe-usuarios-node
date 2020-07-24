@@ -15,7 +15,7 @@ app.use(bodyParser.raw());
 const rutasProtegidas = express.Router();
 rutasProtegidas.use((req, res, next) => {
     const token = req.headers['authorization'];
-    if (token.includes('Bearer ')) {
+    if (token && token.includes('Bearer ')) {
         const t = token.substring(7).toString()
         jwt.verify(t, config.key, function(err, decoded)  {
             if (err) {
@@ -37,6 +37,8 @@ rutasProtegidas.use((req, res, next) => {
  * POST Comentario
  */
 app.post('/comentario', rutasProtegidas, function (req, res) {
+
+    req.body.fechaCreacion = (new Date()).toISOString()
     client.index({
         index: 'comentario',
         type: '_doc',
@@ -83,22 +85,40 @@ app.get('/comentario/:id', rutasProtegidas, function (req, res) {
  */
 app.get('/comentario', rutasProtegidas, function (req, res) {
 
-
     let query = {
         query: {
-            match_all: {}
-        }
+            bool: {
+                must_not: {
+                    exists: {
+                        field: "padre"
+                    }
+                }
+            }
+        },
+        sort: { 
+            fechaCreacion: "desc"
+        } 
     }
 
     if(req.query.q) {
         query = {
             query: {
-                match: {
-                    texto: {
-                        query: req.query.q
+                bool: {
+                    must_not: {
+                        exists: {
+                            field: "padre"
+                        }
+                    },
+                    must: {
+                        match: {
+                            texto: req.query.q
+                        }
                     }
                 }
-            }
+            },
+            sort: { 
+                fechaCreacion: "desc"
+            } 
         }
     } 
 

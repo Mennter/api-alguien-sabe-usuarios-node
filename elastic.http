@@ -1,59 +1,134 @@
 GET https://3d3fs4f166:ztpejeu8qo@alguien-sabe-7413340520.us-west-2.bonsaisearch.net:443
 
+###
+GET http://localhost:9200/
+
 
 ###
-PUT https://3d3fs4f166:ztpejeu8qo@alguien-sabe-7413340520.us-west-2.bonsaisearch.net:443/comentario
+PUT http://localhost:9200/comentario
 content-type: application/json
 
 {
-    "mappings": {
-        "properties": {
-            "tipo": {
-                "type": "integer"
-            },
-            "creador": {
-                "type": "keyword"
-            },
-            "texto": {
-                "type": "text"
-            },
-            "bloqueado": {
-                "type": "boolean"
-            },
-            "borrado": {
-                "type": "boolean"
-            },
-            "detalles": {
-                "type": "object"
-            }
-        }
-    }
+	"settings": {
+		"analysis": {
+			"filter": {
+				"autocomplete_filter": {
+					"type": "edge_ngram",
+					"min_gram": 1,
+					"max_gram": 20
+				}
+			},
+			"analyzer": {
+				"autocomplete": {
+					"type": "custom",
+					"tokenizer": "standard",
+					"filter": [
+						"lowercase",
+						"autocomplete_filter"
+					]
+				}
+			}
+		}
+	},
+	"mappings": {
+		"properties": {
+			"autor": {
+				"properties": {
+					"id": {
+						"type": "integer"
+					},
+					"usuario": {
+						"type": "keyword"
+					},
+					"mail": {
+						"type": "keyword"
+					},
+					"bloqueado": {
+						"type": "boolean"
+					},
+					"borrado": {
+						"type": "boolean"
+					},
+					"alta": {
+						"type": "date"
+					}
+				}
+			},
+			"padre": {
+				"type": "keyword"
+			},
+			"texto": {
+				"type": "text",
+				"analyzer": "autocomplete",
+				"search_analyzer": "standard"
+			},
+			"fechaCreacion": {
+				"type": "date"
+			},
+			"bloqueado": {
+				"type": "boolean"
+			},
+			"borrado": {
+				"type": "boolean"
+			},
+			"detalles": {
+				"type": "object"
+			}
+		}
+	}
 }
 
 ###
-GET https://3d3fs4f166:ztpejeu8qo@alguien-sabe-7413340520.us-west-2.bonsaisearch.net:443/comentario/_mapping
+GET http://localhost:9200/comentario/_mapping
 
 ###
-DELETE https://3d3fs4f166:ztpejeu8qo@alguien-sabe-7413340520.us-west-2.bonsaisearch.net:443/comentario
+DELETE http://localhost:9200/comentario
 
-###
-POST https://3d3fs4f166:ztpejeu8qo@alguien-sabe-7413340520.us-west-2.bonsaisearch.net:443/comentario/_doc HTTP/1.1
+### Comentario
+POST http://localhost:9200/comentario/_doc HTTP/1.1
 content-type: application/json
 
 {
-    "tipo": 1,
-    "creador": "2",
-    "texto": "se esta ",
-    "bloqueado": false,
-    "borrado": false,
-    "detalle": {
-        "categoria": "Pruebas",
-        "padre": "nhneothnothntohunth"
-    }
+	"autor": {
+		"id": 11,
+		"usuario": "ezequiel",
+		"mail": "cezarate@live.com.ar",
+		"bloqueado": false,
+		"borrado": false,
+		"alta": "2020-07-24T01:16:42.329Z"
+	},
+	"padre": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
+	"texto": "Este es mi primer comentario",
+	"fechaCreacion": "2020-07-24T01:16:42.329Z",
+	"borrado": false,
+	"detalle": {
+		"categoria": "comentarios"
+	}
+}
+
+### Pregunta
+POST http://localhost:9200/comentario/_doc HTTP/1.1
+content-type: application/json
+
+{
+	"autor": {
+		"id": 11,
+		"usuario": "ezequiel",
+		"mail": "cezarate@live.com.ar",
+		"bloqueado": false,
+		"borrado": false,
+		"alta": "2020-07-24T01:16:42.329Z"
+	},
+	"texto": "Este es mi primer comentario",
+	"fechaCreacion": "2020-07-24T01:16:42.329Z",
+	"borrado": false,
+	"detalle": {
+		"categoria": "comentarios"
+	}
 }
 
 ###
-GET https://3d3fs4f166:ztpejeu8qo@alguien-sabe-7413340520.us-west-2.bonsaisearch.net:443/comentario/_search
+GET http://localhost:9200/comentario/_search
 content-type: application/json
 
 {

@@ -1,0 +1,38 @@
+GET http://localhost:3000/comentario
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzdWFyaW9faWQiOjExLCJpcCI6IjE3Mi4yMS4wLjIiLCJ1c3VhcmlvIjoiZXplcXVpZWwifSwiZXhwIjoxNTk1NjM5ODM1LCJpYXQiOjE1OTU1NTM0MzZ9.hBCtUiwF9b6HGvAefCwEFZkHFDUh3m_qzfIWAgiddeY
+
+###
+GET http://localhost:3000/comentario?q=prim
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzdWFyaW9faWQiOjExLCJpcCI6IjE3Mi4yMS4wLjIiLCJ1c3VhcmlvIjoiZXplcXVpZWwifSwiZXhwIjoxNTk1NjM5ODM1LCJpYXQiOjE1OTU1NTM0MzZ9.hBCtUiwF9b6HGvAefCwEFZkHFDUh3m_qzfIWAgiddeY
+
+###
+GET http://localhost:3000/comentario/1olxfnMB-Ts7nksNmsRe
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzdWFyaW9faWQiOjExLCJpcCI6IjE3Mi4yMS4wLjIiLCJ1c3VhcmlvIjoiZXplcXVpZWwifSwiZXhwIjoxNTk1NjM5ODM1LCJpYXQiOjE1OTU1NTM0MzZ9.hBCtUiwF9b6HGvAefCwEFZkHFDUh3m_qzfIWAgiddeY
+
+###
+POST http://localhost:3000/comentario
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzdWFyaW9faWQiOjExLCJpcCI6IjE3Mi4yMS4wLjIiLCJ1c3VhcmlvIjoiZXplcXVpZWwifSwiZXhwIjoxNTk1NjM5ODM1LCJpYXQiOjE1OTU1NTM0MzZ9.hBCtUiwF9b6HGvAefCwEFZkHFDUh3m_qzfIWAgiddeY
+content-type: application/json
+
+{
+	"autor": {
+		"id": 11,
+		"usuario": "ezequiel",
+		"mail": "cezarate@live.com.ar",
+		"bloqueado": false,
+		"borrado": false,
+		"alta": "2020-07-24T01:16:42.329Z"
+	},
+    "padre": "A4mlfnMB-Ts7nksNIsXs",
+	"texto": "Esta es mi primera respuesta",
+	"borrado": false,
+	"detalle": {
+		"categoria": "comentarios"
+	}
+}
+
+
+###
+GET http://localhost:3000/comentario
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzdWFyaW9faWQiOjExLCJpcCI6IjE3Mi4yMS4wLjIiLCJ1c3VhcmlvIjoiZXplcXVpZWwifSwiZXhwIjoxNTk1NjM5ODM1LCJpYXQiOjE1OTU1NTM0MzZ9.hBCtUiwF9b6HGvAefCwEFZkHFDUh3m_qzfIWAgiddeY
+
