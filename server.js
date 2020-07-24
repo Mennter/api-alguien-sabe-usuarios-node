@@ -93,7 +93,10 @@ app.get('/comentario/:id/comentarios', rutasProtegidas, function (req, res) {
                         query: req.params.id
                     }
                 }
-            }
+            },
+            sort: { 
+                fechaCreacion: "asc"
+            } 
         }
     }).then((json) => {
         const search = []
