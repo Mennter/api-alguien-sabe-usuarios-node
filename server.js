@@ -81,6 +81,35 @@ app.get('/comentario/:id', rutasProtegidas, function (req, res) {
 
 
 /**
+ * Get Comentarios de comentario padre
+ */
+app.get('/comentario/:id/comentarios', rutasProtegidas, function (req, res) {
+    client.search({
+        index: 'comentario',
+        body: {
+            query: {
+                match: {
+                    padre: {
+                        query: req.params.id
+                    }
+                }
+            }
+        }
+    }).then((json) => {
+        const search = []
+        json.body.hits.hits.forEach(hits => {
+            search.push({ ...hits._source, id: hits._id })
+        });
+        res.send(search);
+    }).catch((error) => {
+        console.log(error)
+        res.send(error)
+    });
+
+});
+
+
+/**
  * Busqueda 
  */
 app.get('/comentario', rutasProtegidas, function (req, res) {
