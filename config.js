@@ -1,4 +1,4 @@
 module.exports = {
-    baseURL: 'http://localhost:9200',
+    baseURL: 'http://192.168.0.4:9200',
     key: 'I1NvZmxleGFzQUcjQVNYI1RTITIzMjMyMyM='
 };

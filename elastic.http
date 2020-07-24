@@ -1,4 +1,4 @@
-GET https://3d3fs4f166:ztpejeu8qo@alguien-sabe-7413340520.us-west-2.bonsaisearch.net:443
+GET http://localhost:9200
 
 ###
 GET http://localhost:9200/
@@ -39,18 +39,6 @@ content-type: application/json
 					},
 					"usuario": {
 						"type": "keyword"
-					},
-					"mail": {
-						"type": "keyword"
-					},
-					"bloqueado": {
-						"type": "boolean"
-					},
-					"borrado": {
-						"type": "boolean"
-					},
-					"alta": {
-						"type": "date"
 					}
 				}
 			},
@@ -91,11 +79,7 @@ content-type: application/json
 {
 	"autor": {
 		"id": 11,
-		"usuario": "ezequiel",
-		"mail": "cezarate@live.com.ar",
-		"bloqueado": false,
-		"borrado": false,
-		"alta": "2020-07-24T01:16:42.329Z"
+		"usuario": "ezequiel"
 	},
 	"padre": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
 	"texto": "Este es mi primer comentario",
@@ -113,11 +97,7 @@ content-type: application/json
 {
 	"autor": {
 		"id": 11,
-		"usuario": "ezequiel",
-		"mail": "cezarate@live.com.ar",
-		"bloqueado": false,
-		"borrado": false,
-		"alta": "2020-07-24T01:16:42.329Z"
+		"usuario": "ezequiel"
 	},
 	"texto": "Este es mi primer comentario",
 	"fechaCreacion": "2020-07-24T01:16:42.329Z",
