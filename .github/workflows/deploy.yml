@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    strategy:
+      matrix:
+        node-version: [12.x] 
     steps:
     - uses: actions/checkout@v2
     - id: release
@@ -20,6 +23,22 @@ jobs:
       with:
         bump_version_scheme: minor
 
+    - name: Cache node modules
+      uses: actions/cache@v1
+      with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            
+    - name: Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+          node-version: ${{ matrix.node-version }}
+          
+    - name: Instalando paquetes
+      run: |
+          npm install
     - name: Creando imagen de docker
       uses: docker/build-push-action@v1
       with:
