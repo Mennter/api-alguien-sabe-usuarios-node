@@ -6,7 +6,7 @@ WORKDIR /app
 
 RUN pwd
 
-RUN npm install
+RUN npm install @elastic/elasticsearch
 
 EXPOSE 3000
 
