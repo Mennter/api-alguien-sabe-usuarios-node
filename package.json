@@ -1,0 +1,25 @@
+{
+  "name": "@ezequiel2point0/node-api-alguiensabe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "config.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mennter/api-alguien-sabe-usuarios-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mennter/api-alguien-sabe-usuarios-node/issues"
+  },
+  "homepage": "https://github.com/Mennter/api-alguien-sabe-usuarios-node#readme"
+}
