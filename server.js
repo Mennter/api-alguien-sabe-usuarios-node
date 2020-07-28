@@ -20,15 +20,19 @@ rutasProtegidas.use((req, res, next) => {
         jwt.verify(t, config.key, function(err, decoded)  {
             if (err) {
                 console.log(err)
-                return res.json({ mensaje: 'Token inválida' });
+                return res.statusCode(401).json({ code: 401, mensaje: 'Token inválido', error: 'UNAUTHORIZED' });
             } else {
                 req.decoded = decoded;
                 next();
             }
         });
     } else {
-        res.send({
-            mensaje: 'Token no proveída.'
+        res
+        .statusCode(400)
+        .send({
+            code: 400,
+            mensaje: 'Token no proveída.',
+            error: 'BAD_REQUEST'
         });
     }
 })
