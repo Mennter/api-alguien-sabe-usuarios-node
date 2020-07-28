@@ -20,7 +20,7 @@ rutasProtegidas.use((req, res, next) => {
         jwt.verify(t, config.key, function(err, decoded)  {
             if (err) {
                 console.log(err)
-                return res.statusCode(401).json({ code: 401, mensaje: 'Token inválido', error: 'UNAUTHORIZED' });
+                return res.status(401).json({ code: 401, mensaje: 'Token inválido', error: 'UNAUTHORIZED' });
             } else {
                 req.decoded = decoded;
                 next();
@@ -28,7 +28,7 @@ rutasProtegidas.use((req, res, next) => {
         });
     } else {
         res
-        .statusCode(400)
+        .status(400)
         .send({
             code: 400,
             mensaje: 'Token no proveída.',
