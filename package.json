@@ -4,8 +4,12 @@
   "description": "",
   "main": "config.js",
   "dependencies": {
+    "@elastic/elasticsearch": "^7.9.0",
+    "elasticsearch": "^16.7.1",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "validator": "^13.1.1",
+    "validatorjs": "^3.19.0"
   },
   "devDependencies": {},
   "scripts": {

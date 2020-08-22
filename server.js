@@ -1,10 +1,15 @@
 const { Client } = require('@elastic/elasticsearch')
 const config = require('./config');
 const client = new Client({ node: config.baseURL, log: 'trace' })
-const jwt = require('jsonwebtoken');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+
+
+const validarCampo = require('./validaciones/campos-validos');
+
+const validarAuth = require('./validaciones/authorization');
+
 
 
 const app = express();
@@ -12,37 +17,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
-const rutasProtegidas = express.Router();
-rutasProtegidas.use((req, res, next) => {
-    const token = req.headers['authorization'];
-    if (token && token.includes('Bearer ')) {
-        const t = token.substring(7).toString()
-        jwt.verify(t, config.key, function(err, decoded)  {
-            if (err) {
-                console.log(err)
-                return res.status(401).json({ code: 401, mensaje: 'Token inválido', error: 'UNAUTHORIZED' });
-            } else {
-                req.decoded = decoded;
-                next();
-            }
-        });
-    } else {
-        res
-        .status(400)
-        .send({
-            code: 400,
-            mensaje: 'Token no proveída.',
-            error: 'BAD_REQUEST'
-        });
-    }
-})
 
 /**
  * POST Comentario
  */
-app.post('/comentario', rutasProtegidas, function (req, res) {
+app.post('/comentario', validarAuth.authorization, validarCampo.comentario, function (req, res) {
 
     req.body.fechaCreacion = (new Date()).toISOString()
+
+    // res.send(req.body);
     client.index({
         index: 'comentario',
         type: '_doc',
@@ -51,8 +34,12 @@ app.post('/comentario', rutasProtegidas, function (req, res) {
         const search = []
         res.send({ id: json.body._id , ...req.body});
     }).catch((error) => {
-        console.log(error)
-        res.send(error)
+        console.log(error);
+        res.send({
+            code: 500,
+            mensaje: error.name,
+            error: 'INTERNAL_SERVER_ERROR'
+        });
     });
 
 });
@@ -60,7 +47,7 @@ app.post('/comentario', rutasProtegidas, function (req, res) {
 /**
  * Get Comentario por ID
  */
-app.get('/comentario/:id', rutasProtegidas, function (req, res) {
+app.get('/comentario/:id', validarAuth.authorization, function (req, res) {
     client.search({
         index: 'comentario',
         body: {
@@ -77,8 +64,12 @@ app.get('/comentario/:id', rutasProtegidas, function (req, res) {
         });
         res.send(search[0] ? search[0] : {});
     }).catch((error) => {
-        console.log(error)
-        res.send(error)
+        console.log(error);
+        res.send({
+            code: 500,
+            mensaje: error.name,
+            error: 'INTERNAL_SERVER_ERROR'
+        });
     });
 
 });
@@ -87,7 +78,7 @@ app.get('/comentario/:id', rutasProtegidas, function (req, res) {
 /**
  * Get Comentarios de comentario padre
  */
-app.get('/comentario/:id/comentarios', rutasProtegidas, function (req, res) {
+app.get('/comentario/:id/comentarios', validarAuth.authorization, function (req, res) {
     client.search({
         index: 'comentario',
         body: {
@@ -98,9 +89,10 @@ app.get('/comentario/:id/comentarios', rutasProtegidas, function (req, res) {
                     }
                 }
             },
-            sort: { 
+            sort: {
                 fechaCreacion: "asc"
-            } 
+            },
+            size: 10000
         }
     }).then((json) => {
         const search = []
@@ -109,8 +101,12 @@ app.get('/comentario/:id/comentarios', rutasProtegidas, function (req, res) {
         });
         res.send(search);
     }).catch((error) => {
-        console.log(error)
-        res.send(error)
+        console.log(error);
+        res.send({
+            code: 500,
+            mensaje: error.name,
+            error: 'INTERNAL_SERVER_ERROR'
+        });
     });
 
 });
@@ -119,7 +115,7 @@ app.get('/comentario/:id/comentarios', rutasProtegidas, function (req, res) {
 /**
  * Busqueda 
  */
-app.get('/comentario', rutasProtegidas, function (req, res) {
+app.get('/comentario', validarAuth.authorization, function (req, res) {
 
     let query = {
         query: {
@@ -131,12 +127,12 @@ app.get('/comentario', rutasProtegidas, function (req, res) {
                 }
             }
         },
-        sort: { 
+        sort: {
             fechaCreacion: "desc"
-        } 
+        }
     }
 
-    if(req.query.q) {
+    if (req.query.q) {
         query = {
             query: {
                 bool: {
@@ -152,11 +148,11 @@ app.get('/comentario', rutasProtegidas, function (req, res) {
                     }
                 }
             },
-            sort: { 
+            sort: {
                 fechaCreacion: "desc"
-            } 
+            }
         }
-    } 
+    }
 
     client.search({
         index: 'comentario',
@@ -168,8 +164,12 @@ app.get('/comentario', rutasProtegidas, function (req, res) {
         });
         res.send(search);
     }).catch((error) => {
-        console.log(error)
-        res.send(error)
+        console.log(error);
+        res.send({
+            code: 500,
+            mensaje: error.name,
+            error: 'INTERNAL_SERVER_ERROR'
+        });
     });
 
 });

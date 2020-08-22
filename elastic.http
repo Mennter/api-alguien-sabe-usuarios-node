@@ -83,7 +83,6 @@ content-type: application/json
 	},
 	"padre": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
 	"texto": "Este es mi primer comentario",
-	"fechaCreacion": "2020-07-24T01:16:42.329Z",
 	"borrado": false,
 	"detalle": {
 		"categoria": "comentarios"
@@ -99,8 +98,7 @@ content-type: application/json
 		"id": 11,
 		"usuario": "ezequiel"
 	},
-	"texto": "Este es mi primer comentario",
-	"fechaCreacion": "2020-07-24T01:16:42.329Z",
+	"texto": "Este es mi cuarto comentario",
 	"borrado": false,
 	"detalle": {
 		"categoria": "comentarios"
