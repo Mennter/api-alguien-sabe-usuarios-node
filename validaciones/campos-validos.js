@@ -18,7 +18,10 @@ const comentario = (req, res, next) => {
     } else {
         for (const key in rules) {
             if (validation.errors.first(key)) {
-                res.send({
+                console.log(validation.errors.first(key))
+                res
+                .status(400)
+                .send({
                     code: 400,
                     mensaje: validation.errors.first(key),
                     error: 'BAD_REQUEST'
