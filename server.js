@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const validarCampo = require('./validaciones/campos-validos');
 
 const validarAuth = require('./validaciones/authorization');
+const { response } = require('express');
 
 
 
@@ -31,11 +32,12 @@ app.post('/comentario', validarAuth.authorization, validarCampo.comentario, func
         type: '_doc',
         body: req.body
     }).then((json) => {
-        const search = []
-        res.send({ id: json.body._id , ...req.body});
+        const data = { id: json.body._id , ...req.body};
+        stream.push_sse(json.body._id, "message", data);
+        res.send(data);
     }).catch((error) => {
         console.log(error);
-        res.send({
+        res.status(500).send({
             code: 500,
             mensaje: error.name,
             error: 'INTERNAL_SERVER_ERROR'
@@ -65,13 +67,36 @@ app.get('/comentario/:id', validarAuth.authorization, function (req, res) {
         res.send(search[0] ? search[0] : {});
     }).catch((error) => {
         console.log(error);
-        res.send({
+        res.status(500).send({
             code: 500,
             mensaje: error.name,
             error: 'INTERNAL_SERVER_ERROR'
         });
     });
 
+});
+
+// const EventEmitter = require('events');
+// const Stream = new EventEmitter();
+
+
+
+const Stream = require('./custom-stream');
+// const app = express();
+const stream = new Stream();
+
+app.use(stream.enable());
+
+/**
+ * Refresco de validarAuth.authorization,
+ */
+app.get('/stream/:id', function (request, response) {
+    stream.add(request, response);
+});
+
+app.get('/test_route', function (request, response) {
+    stream.push_sse("B", "message", {});
+    return response.json({ msg: 'admit one' });
 });
 
 
@@ -102,7 +127,8 @@ app.get('/comentario/:id/comentarios', validarAuth.authorization, function (req,
         res.send(search);
     }).catch((error) => {
         console.log(error);
-        res.send({
+        res.status(500)
+        .send({
             code: 500,
             mensaje: error.name,
             error: 'INTERNAL_SERVER_ERROR'
@@ -165,7 +191,7 @@ app.get('/comentario', validarAuth.authorization, function (req, res) {
         res.send(search);
     }).catch((error) => {
         console.log(error);
-        res.send({
+        res.status(500).send({
             code: 500,
             mensaje: error.name,
             error: 'INTERNAL_SERVER_ERROR'
